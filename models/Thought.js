@@ -1,8 +1,6 @@
 const { Schema, model } = require('mongoose');
 const mongoose = require('mongoose');
 
-const currentDate = Date.now;
-
 const thoughtSchema = new Schema({
     thoughtText: {
         type: String,
@@ -11,15 +9,14 @@ const thoughtSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        get: timeStamp
     },
     username: {
         type: String,
         required: true
     },
-    reactions: {
-        type: []
-    }
+    reactions: []
 });
 
 const reactionSchema = new Schema({
@@ -28,13 +25,24 @@ const reactionSchema = new Schema({
         default: new mongoose.ObjectId()
     },
     reactionBody: {
-        type: String
+        type: String,
+        required: true,
+        max: 280
+    },
+    username: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        get: timeStamp
     }
 });
 // when user queries the database, format the timestamp
-const timeStamp = () => {
-    return Date.now;
-}
+const timeStamp = {
+    get currentDate() { return Date.now() }
+};
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
