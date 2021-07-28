@@ -19,11 +19,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/social-network-
     useUnifiedTopology: true
 });
 
-// get all users
-app.get('./api/user', (req, res) => {
-    res.json(results);
-});
-
 // debug logging
 mongoose.set('debug', true);
 
